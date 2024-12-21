@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document QA System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        textarea, input { width: 100%; padding: 10px; margin-bottom: 10px; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        #answer { margin-top: 20px; padding: 10px; background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Document QA System</h1>
+    <textarea id="document" rows="10" placeholder="Enter your document here..."></textarea>
+    <input type="text" id="question" placeholder="Enter your question...">
+    <button onclick="askQuestion()">Ask Question</button>
+    <div id="answer"></div>
+
+    <script>
+        function askQuestion() {
+            const docContent = document.getElementById('document').value;  // Renamed to docContent
+            const question = document.getElementById('question').value;
+            const answerDiv = document.getElementById('answer');
+
+            answerDiv.innerHTML = 'Thinking...';
+
+            axios.post('/ask', { document: docContent, question })  // Pass the renamed variable here
+                .then(response => {
+                    answerDiv.innerHTML = `Answer: ${response.data.answer}`;
+                })
+                .catch(error => {
+                    answerDiv.innerHTML = `Error: ${error.response.data.error || 'Something went wrong'}`;
+                });
+        }
+
+    </script>
+</body>
+</html>
